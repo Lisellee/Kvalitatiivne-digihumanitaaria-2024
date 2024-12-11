@@ -1,0 +1,156 @@
+
+<!DOCTYPE html>
+<html>
+ <head>
+ <title>Kaart</title>
+ <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.5.1/leaflet.js"></script>
+ <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.5.1/leaflet.css" />
+ <style>
+   body {padding: 0; margin: 0; }
+   html, body { height: 100%; width: 100%;}
+   #kaardikiht {float:bottom; width:80%; height:90%;}
+ </style>
+ <script>
+   var kaart, abikiht;
+   function algus(){
+    kaart = L.map('kaardikiht').setView([58.939562, 25.245666], 7.5);
+      new L.TileLayer(
+  'https://tiles.maaamet.ee/tm/tms/1.0.0/hybriid@GMC/{z}/{x}/{y}.png&ASUTUS=TLU&ERIALA=DIGIHUMANITAARIA', {
+	  attribution: "Map: <a  href='http://www.maaamet.ee/'>Maa-amet</a>",
+	  tms: true,
+    }).addTo(kaart);
+abikiht=L.layerGroup()
+abikiht.addTo(kaart);   
+   }
+   
+   
+   function vajutus1(){
+   vastus1.innerText="Kaardil kuvatud";
+   	vastus2.innerText="Näita radu asukohas: ";
+	vastus3.innerText="";
+	vastus4.innerText="";
+	vastus5.innerText="";
+	vastus6.innerText="";
+   	abikiht.clearLayers();
+		L.marker([59.343083981550805, 24.615486662658586]).addTo(abikiht).bindPopup("Unibet kardikeskus");
+		L.marker([59.41074274868286, 24.626119109093306]).addTo(abikiht).bindPopup("FK kardikeskus");
+		L.marker([59.17416453858308, 24.36492785811431]).addTo(abikiht).bindPopup("Laitse Rally Park");
+		L.marker([59.41182609048763, 24.54746461534424]).addTo(abikiht).bindPopup("Tabasalu kardirada");
+		L.marker([59.12462084123062, 25.745472908020076]).addTo(abikiht).bindPopup("Aravete kardikeskus");
+		L.marker([59.02241790992128, 24.84322071349182]).addTo(abikiht).bindPopup("Rapla kardirada");
+		L.marker([58.65309819644358, 25.946977428836057]).addTo(abikiht).bindPopup("Kuningamäe kardirada");
+		L.marker([58.29582694422348, 26.764205773016357]).addTo(abikiht).bindPopup("Lange Motokeskus");
+		L.marker([58.4025474699714, 24.448570726983643]).addTo(abikiht).bindPopup("Porsche Ring");
+		L.marker([58.39030398290772, 24.48528145767212]).addTo(abikiht).bindPopup("Pärnu kardikeskus");
+		L.marker([58.83154941959398, 22.776569913491816]).addTo(abikiht).bindPopup("Käina kardikeskus");
+	 	  kaart.setView([58.772748, 25.167848], 7.5);
+	 }
+	  
+	function vajutus2(){
+ 	vastus1.innerText="Kuva kaardil";   
+	vastus2.innerText="Näita radu asukohas: valitud";
+	vastus3.innerText="";
+	vastus4.innerText="";
+	vastus5.innerText="";
+	vastus6.innerText="";
+	abikiht.clearLayers();
+		L.marker([59.343083981550805, 24.615486662658586]).addTo(abikiht).bindPopup("Unibet kardikeskus");
+		L.marker([59.41074274868286, 24.626119109093306]).addTo(abikiht).bindPopup("FK kardikeskus");
+		L.marker([59.17416453858308, 24.36492785811431]).addTo(abikiht).bindPopup("Laitse Rally Park");
+		L.marker([59.41182609048763, 24.54746461534424]).addTo(abikiht).bindPopup("Tabasalu kardirada");
+
+		  kaart.setView([59.311548, 24.473419], 10);
+	  }
+	  
+	function vajutus3(){
+ 	vastus1.innerText="Kuva kaardil";   
+	vastus2.innerText="Näita radu asukohas: ";
+	vastus3.innerText="valitud";
+	vastus4.innerText="";
+	vastus5.innerText="";
+	vastus6.innerText="";
+	abikiht.clearLayers();
+		L.marker([59.12462084123062, 25.745472908020076]).addTo(abikiht).bindPopup("Aravete kardikeskus");
+		L.marker([59.02241790992128, 24.84322071349182]).addTo(abikiht).bindPopup("Rapla kardirada");
+		L.marker([58.65309819644358, 25.946977428836057]).addTo(abikiht).bindPopup("Kuningamäe kardirada");
+
+		  kaart.setView([58.900435, 25.474548], 9);
+	  }
+	  
+	function vajutus4(){
+ 	vastus1.innerText="Kuva kaardil";   
+	vastus2.innerText="Näita radu asukohas: ";
+	vastus3.innerText="";
+	vastus4.innerText="valitud";
+	vastus5.innerText="";
+	vastus6.innerText="";
+	abikiht.clearLayers();
+		L.marker([58.29582694422348, 26.764205773016357]).addTo(abikiht).bindPopup("Lange Motokeskus");
+
+		  kaart.setView([58.316932, 26.728363], 10);
+	  } 
+
+	function vajutus5(){
+ 	vastus1.innerText="Kuva kaardil";   
+	vastus2.innerText="Näita radu askohas: ";
+	vastus3.innerText="";
+	vastus4.innerText="";
+	vastus5.innerText="valitud";
+	vastus6.innerText="";
+	abikiht.clearLayers();
+	abikiht.clearLayers();
+		L.marker([58.4025474699714, 24.448570726983643]).addTo(abikiht).bindPopup("Porsche Ring");
+		L.marker([58.39030398290772, 24.48528145767212]).addTo(abikiht).bindPopup("Pärnu kardikeskus");
+		
+		  kaart.setView([58.400015, 24.495392], 10);
+	  } 	
+	
+	function vajutus6(){
+ 	vastus1.innerText="Kuva kaardil";   
+	vastus2.innerText="Näita radu asukohas: ";
+	vastus3.innerText="";
+	vastus4.innerText="";
+	vastus5.innerText="";
+	vastus6.innerText="valitud";
+	abikiht.clearLayers();
+		L.marker([58.83154941959398, 22.776569913491816]).addTo(abikiht).bindPopup("Käina kardikeskus");
+	 	 
+		  kaart.setView([58.829252, 22.781525], 11);
+	  } 
+	
+ 	function vajutus7(){
+ 	vastus1.innerText="Kuva kaardil";   
+	vastus2.innerText="Näita radu asukohas: ";
+	vastus3.innerText="";
+	vastus4.innerText="";
+	vastus5.innerText="";
+	vastus6.innerText="";
+	vastus7.innerText="Tagasi algvaatesse"
+	abikiht.clearLayers();
+
+		  kaart.setView([58.939562, 25.245666], 7.5);
+	  } 
+	  
+	  
+
+  </script>
+ </head>  
+ <body onload="algus()">
+   <div id="kaardikiht"></div>
+	<span id="vastus1">Kuva kaardil</span>
+		<input type="button" value="Eesti hobikardirajad" onclick="vajutus1()" />
+	<span id="vastus2">Näita radu asukohas</span>
+		<input type="button" value="Tallinn ja Harjumaa" onclick="vajutus2()" />
+	<span id="vastus3"></span>
+		<input type="button" value="Kesk-Eesti" onclick="vajutus3()" />
+    <span id="vastus4"></span>
+		<input type="button" value="Lõuna-Eesti" onclick="vajutus4()" />
+	<span id="vastus5"></span>
+		<input type="button" value="Pärnumaa" onclick="vajutus5()" />
+	<span id="vastus6"></span>
+		<input type="button" value="Hiiumaa" onclick="vajutus6()" />
+	<span id="vastus7">Tagasi algvaatesse</span>
+		<input type="button" value="Puhasta kaart" onclick="vajutus7()" />
+   
+ </body>
+</html>
