@@ -1,0 +1,106 @@
+
+<!DOCTYPE html>
+<html>
+ <head>
+ <title>Kaart</title>
+ <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.5.1/leaflet.js"></script>
+ <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.5.1/leaflet.css" />
+ <style>
+   body {padding: 0; margin: 0; }
+   html, body { height: 100%; width: 100%;}
+   #kaardikiht {float:bottom; width:100%; height:100%;}
+ </style>
+ <script>
+ 
+ 
+   var kaart, abikiht;
+   var hypik;
+   var aktiivne = "type1"
+   
+   
+   function algus(){
+    kaart = L.map('kaardikiht').setView([58.741607, 25.949707], 8);
+      new L.TileLayer(  'https://tiles.maaamet.ee/tm/tms/1.0.0/hybriid@GMC/{z}/{x}/{y}.png&ASUTUS=TLU&ERIALA=DIGIHUMANITAARIA', {
+	  attribution: "Map: <a  href='http://www.maaamet.ee/'>Maa-amet</a>",
+	  tms: true,
+    }).addTo(kaart);
+	abikiht=L.layerGroup()
+	abikiht.addTo(kaart);
+
+   	hypik=L.popup(); 
+	kaart.on("click", function(e)
+	{
+        if (aktiivne === "type1") {
+          vajutus1(e);
+        } else if (aktiivne === "type2") {
+          vajutus2(e);
+        }
+      });
+	 loe();
+   }
+   
+   
+   function vajutus1(e){
+	     hypik.setLatLng(e.latlng).
+		 setContent("Kontsert: a "+e.latlng.toString()).openOn(kaart);
+		 L.circleMarker(e.latlng, {radius: 5, color: 'red'}).addTo(abikiht); 
+		 	   fetch("https://script.google.com/macros/s/AKfycbzcUMYgcL4k8hDBE9rFx6dg6snrvxwSgF2v84mgPnsV1pH_UbPLVdggZVk_dvu1QHn9/exec?kirjeldus=kontsert&laiuskraad="+e.latlng.lat+"&pikkuskraad="+e.latlng.lng).then(d => d.text()).then(console.log);
+
+   }
+   
+       function vajutus2(e) {
+      hypik.setLatLng(e.latlng)
+        .setContent("Parkimine: asukoht " + e.latlng.toString())
+        .openOn(kaart);
+     L.circleMarker(e.latlng, {radius: 5,color: 'green'}).addTo(abikiht);
+      fetch("https://script.google.com/macros/s/AKfycbzcUMYgcL4k8hDBE9rFx6dg6snrvxwSgF2v84mgPnsV1pH_UbPLVdggZVk_dvu1QHn9/exec?kirjeldus=parkimine&laiuskraad=" + e.latlng.lat + "&pikkuskraad=" + e.latlng.lng)
+        .then(d => d.text())
+        .then(console.log);
+    }
+	
+	    function setType(type) {
+      aktiivne = type;
+	  document.getElementById('aktiivneDisplay').innerText = aktiivne === "type1" ? "Kontsert" : "Parkimine"; 
+    }
+   
+      function loe(){
+       fetch("https://script.google.com/macros/s/AKfycbwK_8lFPsxDwCx5A67XDe1uvzHiFlze4Db3f8K3Qp8gyYJ76ZDC2sftGOqKXXA-u0Es/exec").
+	      then(d => d.json()).then(kuva);
+   }
+   
+      function kuva(d){
+	   abikiht.clearLayers();
+	   for(rida of d.slice(1)){
+       let latlng = [parseFloat(rida[1]), parseFloat(rida[2])];
+       let type = rida[0]; 
+       let circleMarker = L.circleMarker(latlng, {
+         radius: 5,
+         color: type === "kontsert" ? 'red' : 'green'
+       });
+       
+       circleMarker.addTo(abikiht);
+       circleMarker.bindPopup(type);
+     }
+   }
+   
+   
+      function vajutus(e){
+	     hypik.setLatLng(e.latlng).
+		 setContent("Vajutasid "+e.latlng.toString()).openOn(kaart);
+		 fetch("https://script.google.com/macros/s/AKfycbwK_8lFPsxDwCx5A67XDe1uvzHiFlze4Db3f8K3Qp8gyYJ76ZDC2sftGOqKXXA-u0Es/exec?kirjeldus=kaardilt&laiuskraad="+e.latlng.lat+"&pikkuskraad="+e.latlng.lng).then(d => d.text()).then(console.log);
+
+   }
+   
+   
+
+  </script>
+ </head>  
+ <body onload="algus()">
+	<div id="controls">
+		<button onclick="setType('type1')">Sisesta kontserdi asukoht</button>
+		<button onclick="setType('type2')">Sisesta parkimiskoht</button>
+		<p>Aktiivne: <span id="aktiivneDisplay">Kontserdi asukoht</span></p>
+	</div>
+	<div id="kaardikiht" style="width: 1200px; height: 800px"></div>
+ </body>
+</html>
