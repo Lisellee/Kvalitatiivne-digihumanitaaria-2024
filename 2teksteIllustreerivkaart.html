@@ -1,0 +1,112 @@
+
+<!doctype html>
+<html>
+  <head>
+ <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.5.1/leaflet.js"></script>
+ <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.5.1/leaflet.css" />
+
+    <script>
+   let kaart, abikiht, kohad;
+
+	   function lugemine1(){
+	      fetch("https://www.tlu.ee/~jaagup/andmed/muu/kohad.txt").
+		     then(andmed => andmed.text()).then(salvestaKohad);
+	   }
+	   	   
+	   function salvestaKohad(t){
+	     // vastus1.innerText=t;
+		  kohad={};
+		  if(t.startsWith("koht")){
+			 let read=t.split("\n").splice(1);
+			 for(let rida of read){
+			    let m=rida.split(",");
+				if(m.length==4){
+				  kohad[m[0]]=[parseFloat(m[1]), parseFloat(m[2])]
+				}
+			 }
+		  }
+		  console.log(kohad);
+	   }
+	   
+   function algus(){
+    kaart = L.map('kaardikiht').setView([58.741607, 25.949707], 7);
+      new L.TileLayer(
+  'https://tiles.maaamet.ee/tm/tms/1.0.0/hybriid@GMC/{z}/{x}/{y}.png&ASUTUS=TLU&ERIALA=DIGIHUMANITAARIA', {
+	  attribution: "Map: <a  href='http://www.maaamet.ee/'>Maa-amet</a>",
+	  tms: true,
+    }).addTo(kaart);
+    abikiht=L.layerGroup()
+	abikiht.addTo(kaart);
+   }
+   
+   
+   
+   
+    function vajutus1(){
+	
+      let sonad=kast1.value.replace(/[,.\s]+/g, ' ').replace(".", "").split(" ");
+	  abikiht.clearLayers();
+	  let kohanimed=[];
+	  for(let sona of sonad){
+		sona=sona.trim();
+	     if(kohad[sona] && !kohanimed.includes(sona)){
+		    kohanimed.push(sona);
+			L.marker(kohad[sona]).addTo(abikiht).bindPopup(sona);
+		 }
+	  }
+	vastus1.innerText=kohanimed.join(",");
+   }  
+   
+   
+   
+   function vajutus2(){
+   
+      let sonad=kast1.value.replace(/[,.\s]+/g, ' ').
+	    replace(".", "").split(" ");
+	  abikiht.clearLayers();
+	  let kohanimed=[];
+	  let wordCount={};
+	  for (let sona of sonad){
+	  sona=sona.trim();
+	  if (sona !==""){
+		wordCount[sona]=(wordCount[sona]|| 0)+1;
+		}
+	  }
+	  for(let sona of sonad){
+	  sona=sona.trim();
+	     if(kohad[sona]){
+		    kohanimed.push(sona);
+			let count= wordCount[sona];
+			radius = count*1750;
+			L.circle(kohad[sona],{radius:radius}).addTo(abikiht).bindPopup(sona);
+			//L.marker(kohad[sona]).addTo(abikiht).bindPopup(sona);
+		 }
+	  }
+	  
+	  let counts={};
+	  for (let sona of kohanimed){
+	  counts[sona] = (counts[sona] || 0) + 1;
+	  }
+	  let output= '';
+	  for(let name in counts){
+	  output += `${name}: ${counts[name]}\n`;
+	  }
+	  vastus2.innerText = output;
+	//vastus2.innerText=kohanimed, wordCount[sona];
+   }
+
+   
+   
+   
+	</script>
+  </head>
+  <body onload="lugemine1(); algus()">
+     <div id="kaardikiht" style="width: 800px; height: 400px"></div>
+	 <p>Sisesta tekst:</p>
+     <textarea id="kast1" style="width: 600px; height: 100px"></textarea><br />
+	 <input type="button" onclick="vajutus1()" value="Nimetatud kohad"/>
+	 <div id="vastus1">Vastuse koht</div>
+	 <input type="button" onclick="vajutus2()" value="Kohanimede esinemise sagedus" />
+	 <div id="vastus2">Vastuse koht</div>
+  </body>
+</html>
